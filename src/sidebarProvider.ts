@@ -235,6 +235,10 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline';">
   <style>
+    :root {
+      --accent-green: #4ade80;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -497,6 +501,10 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
       background: var(--vscode-list-hoverBackground);
     }
 
+    .dropdown-button.active {
+      color: var(--accent-green);
+    }
+
     .dropdown-menu {
       position: absolute;
       bottom: 100%;
@@ -564,7 +572,7 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
       border-radius: 50%;
       overflow: hidden;
       background: conic-gradient(
-        var(--vscode-textLink-foreground) calc(var(--context-percent) * 1%),
+        var(--accent-green) calc(var(--context-percent) * 1%),
         transparent calc(var(--context-percent) * 1%)
       );
     }
@@ -695,8 +703,8 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
     }
 
     .badge {
-      background: var(--vscode-badge-background);
-      color: var(--vscode-badge-foreground);
+      background: var(--accent-green);
+      color: #000;
       padding: 2px 6px;
       border-radius: 10px;
       font-size: 10px;
@@ -785,7 +793,7 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
     <div class="input-controls">
       <div class="input-left">
         <div class="dropdown-container">
-          <button class="dropdown-button" id="modeBtn"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span> Ask <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></button>
+          <button class="dropdown-button active" id="modeBtn"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span> Ask <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></button>
         </div>
         <div class="dropdown-container">
           <button class="dropdown-button" id="modelBtn">
