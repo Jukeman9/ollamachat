@@ -58,6 +58,12 @@
         "key": "ctrl+shift+o",
         "mac": "cmd+shift+o",
         "when": "!terminalFocus"
+      },
+      {
+        "command": "ollamaChat.sendSelection",
+        "key": "ctrl+l",
+        "mac": "cmd+l",
+        "when": "view.ollamaChat.chatView.visible && editorTextFocus && editorHasSelection"
       }
     ]
   },

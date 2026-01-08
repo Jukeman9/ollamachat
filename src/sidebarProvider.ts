@@ -3,6 +3,7 @@ import { OllamaClient, Model } from './ollamaClient';
 import { OllamaService } from './ollamaService';
 import { ChatManager, Message } from './chatManager';
 import { ContextTracker } from './contextTracker';
+import { isHijackEnabled } from './extension';
 
 export class OllamaChatProvider implements vscode.WebviewViewProvider {
   private view?: vscode.WebviewView;
@@ -67,6 +68,15 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
           break;
         case 'stopGeneration':
           // TODO: Implement AbortController for stopping generation
+          break;
+        case 'enableHijack':
+          vscode.commands.executeCommand('ollamaChat.enableHijack');
+          break;
+        case 'disableHijack':
+          vscode.commands.executeCommand('ollamaChat.disableHijack');
+          break;
+        case 'getHijackState':
+          this.postMessage({ type: 'hijackState', enabled: isHijackEnabled() });
           break;
       }
     });
@@ -614,6 +624,67 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
       display: flex;
     }
 
+    /* Settings Panel */
+    .settings-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 280px;
+      height: 100%;
+      background: var(--vscode-sideBar-background);
+      border-left: 1px solid var(--vscode-panel-border);
+      z-index: 50;
+      display: none;
+      flex-direction: column;
+    }
+
+    .settings-panel.open {
+      display: flex;
+    }
+
+    .settings-header {
+      padding: 12px;
+      border-bottom: 1px solid var(--vscode-panel-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .settings-header h3 {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .settings-content {
+      padding: 12px;
+    }
+
+    .settings-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .settings-item:hover {
+      background: var(--vscode-list-hoverBackground);
+    }
+
+    .settings-item input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+    }
+
+    .settings-hint {
+      padding: 8px;
+      font-size: 11px;
+      color: var(--vscode-descriptionForeground);
+    }
+
     .history-header {
       padding: 12px;
       border-bottom: 1px solid var(--vscode-panel-border);
@@ -825,6 +896,20 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
     <div class="history-list" id="historyList"></div>
   </div>
 
+  <div class="settings-panel" id="settingsPanel">
+    <div class="settings-header">
+      <h3>Settings</h3>
+      <button class="icon-button" id="closeSettingsBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+    </div>
+    <div class="settings-content">
+      <label class="settings-item">
+        <input type="checkbox" id="hijackShortcut">
+        <span>Hijack Cmd+L shortcut</span>
+      </label>
+      <div class="settings-hint">When enabled, Cmd+L sends selected code to Ollama Chat instead of Cursor AI. Requires window reload.</div>
+    </div>
+  </div>
+
   <script>
     const vscode = acquireVsCodeApi();
 
@@ -854,6 +939,8 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
     const historyPanel = document.getElementById('historyPanel');
     const historyList = document.getElementById('historyList');
     const historySearch = document.getElementById('historySearch');
+    const settingsPanel = document.getElementById('settingsPanel');
+    const hijackShortcut = document.getElementById('hijackShortcut');
 
     // Initialize
     vscode.postMessage({ type: 'ready' });
@@ -923,6 +1010,10 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
           messageInput.value = msg.text;
           messageInput.focus();
           autoResize(messageInput);
+          break;
+
+        case 'hijackState':
+          hijackShortcut.checked = msg.enabled;
           break;
       }
     });
@@ -1135,8 +1226,24 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
     };
 
     document.getElementById('settingsBtn').onclick = () => {
-      alert('No settings yet');
+      settingsPanel.classList.toggle('open');
+      historyPanel.classList.remove('open');
+      if (settingsPanel.classList.contains('open')) {
+        vscode.postMessage({ type: 'getHijackState' });
+      }
     };
+
+    document.getElementById('closeSettingsBtn').onclick = () => {
+      settingsPanel.classList.remove('open');
+    };
+
+    hijackShortcut.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        vscode.postMessage({ type: 'enableHijack' });
+      } else {
+        vscode.postMessage({ type: 'disableHijack' });
+      }
+    });
 
     modelBtn.onclick = (e) => {
       e.stopPropagation();
