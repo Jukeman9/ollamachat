@@ -817,6 +817,7 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
     pre, code {
       font-family: var(--vscode-editor-font-family);
       background: var(--vscode-textCodeBlock-background);
+      color: var(--vscode-editor-foreground);
       border-radius: 4px;
     }
 
