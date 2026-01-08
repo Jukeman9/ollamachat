@@ -298,6 +298,34 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
       background: var(--vscode-list-hoverBackground);
     }
 
+    .icon-button svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+    }
+
+    .icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .icon-sm svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .icon-lg svg {
+      width: 48px;
+      height: 48px;
+      opacity: 0.5;
+    }
+
     .subheader {
       padding: 4px 16px 8px;
       color: var(--vscode-descriptionForeground);
@@ -732,9 +760,9 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
   <div class="header">
     <span class="chat-title" id="chatTitle" title="Click to rename">New Chat</span>
     <div class="header-buttons">
-      <button class="icon-button" id="newChatBtn" title="New Chat">+</button>
-      <button class="icon-button" id="historyBtn" title="Chat History">🕐</button>
-      <button class="icon-button" id="settingsBtn" title="Settings">⋯</button>
+      <button class="icon-button" id="newChatBtn" title="New Chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+      <button class="icon-button" id="historyBtn" title="Chat History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></button>
+      <button class="icon-button" id="settingsBtn" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg></button>
     </div>
   </div>
 
@@ -757,11 +785,11 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
     <div class="input-controls">
       <div class="input-left">
         <div class="dropdown-container">
-          <button class="dropdown-button" id="modeBtn">💬 Ask ▼</button>
+          <button class="dropdown-button" id="modeBtn"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span> Ask <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></button>
         </div>
         <div class="dropdown-container">
           <button class="dropdown-button" id="modelBtn">
-            <span id="selectedModelName">Select Model</span> ▼
+            <span id="selectedModelName">Select Model</span> <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
           </button>
           <div class="dropdown-menu" id="modelDropdown"></div>
         </div>
@@ -771,7 +799,9 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
           <div class="context-fill"></div>
           <div class="context-tooltip" id="contextTooltip">0% · 0 / 4K context used</div>
         </div>
-        <button class="icon-button" id="atBtn" title="Add context (coming soon)" disabled>@</button>
+        <button class="icon-button" id="atBtn" title="Add context (coming soon)" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"></path></svg></button>
+        <button class="icon-button" id="globeBtn" title="Web search (coming soon)" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg></button>
+        <button class="icon-button" id="micBtn" title="Voice input (coming soon)" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg></button>
       </div>
     </div>
   </div>
@@ -779,7 +809,7 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
   <div class="history-panel" id="historyPanel">
     <div class="history-header">
       <h3>Chat History</h3>
-      <button class="icon-button" id="closeHistoryBtn">✕</button>
+      <button class="icon-button" id="closeHistoryBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
     </div>
     <div class="history-search">
       <input type="text" id="historySearch" placeholder="Search chats...">
@@ -911,7 +941,7 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
       if (state.chat.messages.length === 0) {
         messages.innerHTML = \`
           <div class="empty-state">
-            <div class="empty-state-icon">💬</div>
+            <div class="empty-state-icon icon-lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
             <p>Start a conversation with \${state.selectedModel || 'Ollama'}</p>
           </div>
         \`;
@@ -948,7 +978,7 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
 
       html += \`
         <div class="message-options">
-          <button class="icon-button" onclick="copyMessage(this)" title="Copy">📋</button>
+          <button class="icon-button" onclick="copyMessage(this)" title="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
         </div>
       \`;
 
@@ -1015,7 +1045,7 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
       html += \`<div class="content">\${formatContent(msg.content)}</div>\`;
       html += \`
         <div class="message-options">
-          <button class="icon-button" onclick="copyMessage(this)" title="Copy">📋</button>
+          <button class="icon-button" onclick="copyMessage(this)" title="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
         </div>
       \`;
 
@@ -1034,8 +1064,8 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
              onclick="selectModel('\${m.name}')">
           <span>\${m.name}</span>
           <span class="model-icons">
-            \${m.supportsThinking ? '🧠' : ''}
-            \${m.name === state.selectedModel ? '✓' : ''}
+            \${m.supportsThinking ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"></path><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"></path><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"></path></svg>' : ''}
+            \${m.name === state.selectedModel ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' : ''}
           </span>
         </div>
       \`).join('');
@@ -1058,12 +1088,12 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
           \${chats.map(chat => \`
             <div class="history-item \${state.chat && chat.id === state.chat.id ? 'current' : ''}"
                  onclick="selectChat('\${chat.id}')">
-              <span class="history-item-title">💬 \${escapeHtml(chat.title)}</span>
+              <span class="history-item-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> \${escapeHtml(chat.title)}</span>
               \${state.chat && chat.id === state.chat.id ? '<span class="badge">Current</span>' : ''}
               <span class="history-item-time">\${formatRelativeTime(chat.createdAt)}</span>
               <div class="history-item-actions">
-                <button class="icon-button" onclick="event.stopPropagation(); renameChat('\${chat.id}')" title="Rename">✏️</button>
-                <button class="icon-button" onclick="event.stopPropagation(); deleteChat('\${chat.id}')" title="Delete">🗑️</button>
+                <button class="icon-button" onclick="event.stopPropagation(); renameChat('\${chat.id}')" title="Rename"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path><path d="m15 5 4 4"></path></svg></button>
+                <button class="icon-button" onclick="event.stopPropagation(); deleteChat('\${chat.id}')" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
               </div>
             </div>
           \`).join('')}
