@@ -525,7 +525,6 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
       border: 2px solid var(--vscode-panel-border);
       position: relative;
       cursor: pointer;
-      overflow: hidden;
     }
 
     .context-fill {
@@ -535,6 +534,7 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
       width: 100%;
       height: 100%;
       border-radius: 50%;
+      overflow: hidden;
       background: conic-gradient(
         var(--vscode-textLink-foreground) calc(var(--context-percent) * 1%),
         transparent calc(var(--context-percent) * 1%)
