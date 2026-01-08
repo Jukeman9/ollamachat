@@ -1,81 +1,10 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
-import * as fs from 'fs';
 import { OllamaService } from './ollamaService';
 import { OllamaClient } from './ollamaClient';
 import { ChatManager } from './chatManager';
 import { ContextTracker } from './contextTracker';
 import { OllamaChatProvider } from './sidebarProvider';
-
-// ============================================================================
-// Keybindings Hijack Helpers
-// ============================================================================
-
-function getKeybindingsPath(): string {
-  const platform = process.platform;
-  const home = process.env.HOME || process.env.USERPROFILE || '';
-  if (platform === 'darwin') {
-    return path.join(home, 'Library/Application Support/Cursor/User/keybindings.json');
-  } else if (platform === 'win32') {
-    return path.join(process.env.APPDATA || '', 'Cursor/User/keybindings.json');
-  } else {
-    return path.join(home, '.config/Cursor/User/keybindings.json');
-  }
-}
-
-function stripJsonComments(content: string): string {
-  return content.replace(/^\s*\/\/.*$/gm, '');
-}
-
-function readKeybindings(): any[] {
-  const filePath = getKeybindingsPath();
-  if (!fs.existsSync(filePath)) return [];
-  try {
-    const content = fs.readFileSync(filePath, 'utf8');
-    const stripped = stripJsonComments(content);
-    const trimmed = stripped.trim();
-    if (!trimmed) return [];
-    return JSON.parse(trimmed);
-  } catch { return []; }
-}
-
-function writeKeybindings(keybindings: any[]): void {
-  const filePath = getKeybindingsPath();
-  const header = '// Place your key bindings in this file to override the defaults\n';
-  const dir = path.dirname(filePath);
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(filePath, header + JSON.stringify(keybindings, null, 4), 'utf8');
-}
-
-const HIJACK_ENTRY = {
-  key: process.platform === 'darwin' ? 'cmd+l' : 'ctrl+l',
-  command: '-aichat.newchataction',
-  when: 'view.ollamaChat.chatView.visible && editorTextFocus && editorHasSelection'
-};
-
-export function isHijackEnabled(): boolean {
-  return readKeybindings().some(kb => kb.command === '-aichat.newchataction' && kb.when?.includes('ollamaChat'));
-}
-
-function enableHijack(): boolean {
-  try {
-    const keybindings = readKeybindings();
-    if (!isHijackEnabled()) {
-      keybindings.push(HIJACK_ENTRY);
-      writeKeybindings(keybindings);
-    }
-    return true;
-  } catch { return false; }
-}
-
-function disableHijack(): boolean {
-  try {
-    let keybindings = readKeybindings();
-    keybindings = keybindings.filter(kb => !(kb.command === '-aichat.newchataction' && kb.when?.includes('ollamaChat')));
-    writeKeybindings(keybindings);
-    return true;
-  } catch { return false; }
-}
+import { enableHijack, disableHijack } from './keybindingHelpers';
 
 let chatProvider: OllamaChatProvider;
 

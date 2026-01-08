@@ -3,7 +3,7 @@ import { OllamaClient, Model } from './ollamaClient';
 import { OllamaService } from './ollamaService';
 import { ChatManager, Message } from './chatManager';
 import { ContextTracker } from './contextTracker';
-import { isHijackEnabled } from './extension';
+import { isHijackEnabled } from './keybindingHelpers';
 
 export class OllamaChatProvider implements vscode.WebviewViewProvider {
   private view?: vscode.WebviewView;
@@ -27,6 +27,15 @@ export class OllamaChatProvider implements vscode.WebviewViewProvider {
     };
 
     webviewView.webview.html = this.getHtmlContent();
+
+    // Set custom context key for keybinding conditions
+    vscode.commands.executeCommand('setContext', 'ollamaChatVisible', webviewView.visible);
+
+    // Update context key when visibility changes
+    webviewView.onDidChangeVisibility(() => {
+      vscode.commands.executeCommand('setContext', 'ollamaChatVisible', webviewView.visible);
+      console.log('[OllamaChat] Visibility changed:', webviewView.visible);
+    });
 
     webviewView.webview.onDidReceiveMessage(async (msg: WebviewMessage) => {
       switch (msg.type) {

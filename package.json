@@ -63,7 +63,7 @@
         "command": "ollamaChat.sendSelection",
         "key": "ctrl+l",
         "mac": "cmd+l",
-        "when": "view.ollamaChat.chatView.visible && editorTextFocus && editorHasSelection"
+        "when": "ollamaChatVisible && editorTextFocus && editorHasSelection"
       }
     ]
   },
